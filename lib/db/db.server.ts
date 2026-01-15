@@ -1,7 +1,8 @@
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
+import { Database } from "./db.types";
 
-export async function createClient() {
+export async function createDBClient() {
     const cookieStore = await cookies();
 
     const dbUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -9,7 +10,7 @@ export async function createClient() {
 
     if (!dbUrl || !dbKey) throw new Error("Missing DB env variables");
 
-    return createServerClient(dbUrl, dbKey, {
+    return createServerClient<Database>(dbUrl, dbKey, {
         cookies: {
             getAll() {
                 return cookieStore.getAll();

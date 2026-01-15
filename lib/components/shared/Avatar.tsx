@@ -3,11 +3,12 @@ import Image from "next/image";
 interface Props {
     avatar: string | null;
     username: string;
+    size: "L" | "S";
 }
 
-export default function Avatar({ avatar, username }: Props) {
+export default function Avatar({ avatar, username, size }: Props) {
     return (
-        <div className="h-8 w-8">
+        <div className={size === "L" ? "h-24 w-24" : "h-8 w-8"}>
             {avatar ? (
                 <Image
                     src={avatar}

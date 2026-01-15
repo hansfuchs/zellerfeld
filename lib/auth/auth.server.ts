@@ -1,7 +1,7 @@
-import { createClient } from "@/lib/db/db.server";
+import { createDBClient } from "@/lib/db/db.server";
 
 export async function getUser() {
-    const supabase = await createClient();
+    const supabase = await createDBClient();
 
     const {
         data: { user },

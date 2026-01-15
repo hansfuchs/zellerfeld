@@ -1,9 +1,11 @@
-import { PageProps } from "@/types/next";
-
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
-export default async function ConfirmPage({ query }: PageProps) {
+export default async function ConfirmPage({
+    query,
+}: {
+    query: Promise<{ confirmation_url: string | undefined }>;
+}) {
     const { confirmation_url } = await query;
     const router = useRouter();
 

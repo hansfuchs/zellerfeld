@@ -13,7 +13,7 @@ export default async function Author({ user }: Props) {
             href={`/user/${user.username}`}
             className="flex w-fit items-center gap-4"
         >
-            <Avatar username={user.username} avatar={user.avatar} />
+            <Avatar username={user.username} avatar={user.avatar} size="S" />
 
             <div>{user.username}</div>
         </Link>
