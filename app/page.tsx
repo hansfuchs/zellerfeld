@@ -1,6 +1,4 @@
-import { PageProps } from "@/types/next/page.types";
-
-export default async function Home({ params, searchParams }: PageProps) {
+export default async function Home() {
     return (
         <div>
             <div>Hello world.</div>
