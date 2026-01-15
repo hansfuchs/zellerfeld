@@ -3,9 +3,20 @@
 import { useAuth } from "@/lib/auth/auth.context";
 import Link from "next/link";
 import Avatar from "@/lib/components/shared/Avatar";
+import { useRouter } from "next/navigation";
 
 export default function Header() {
-    const { user, loading } = useAuth();
+    const { user, loading, signOut } = useAuth();
+    const router = useRouter();
+
+    async function logout() {
+        try {
+            await signOut();
+            router.push("/");
+        } catch (e) {
+            console.error("Oops... Unable to logout???");
+        }
+    }
 
     return (
         <div className="mb-8 flex w-full justify-end">
@@ -18,6 +29,9 @@ export default function Header() {
                             <Link href={`/user/${user.username}`}>
                                 <button>Profile</button>
                             </Link>
+
+                            <button onClick={logout}>Logout</button>
+
                             <Avatar
                                 username={user.username}
                                 avatar={user.avatar}
