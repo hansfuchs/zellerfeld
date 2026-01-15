@@ -1,90 +1,87 @@
 name: Pull Request
 
 on:
-  pull_request:
-    types: [opened, synchronize, reopened, ready_for_review]
-  merge_group:
-    branches:
-      - main
+    pull_request:
+        types: [opened, synchronize, reopened, ready_for_review]
+    merge_group:
+        branches:
+            - main
 
 permissions:
-  id-token: write
-  pages: write
-  contents: read
-  packages: read
-  issues: write
-  pull-requests: write
-  actions: write
+    id-token: write
+    pages: write
+    contents: read
+    packages: read
+    issues: write
+    pull-requests: write
+    actions: write
 
 env:
-  CI: "true"
+    CI: "true"
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
-  cancel-in-progress: true
+    group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+    cancel-in-progress: true
 
 jobs:
-  check-format:
-    name: Check formatting
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v5
+    check-format:
+        name: Check formatting
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v5
 
-      - uses: ./.github/actions/install-packages
-        with:
-          auth-token: ${{ secrets.GITHUB_TOKEN }}
+            - uses: ./.github/actions/install-packages
+              with:
+                  auth-token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Check file formatting
-        run: bun run format
+            - name: Check file formatting
+              run: bun run format
 
-  lint:
-    name: Run linting
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v5
+    lint:
+        name: Run linting
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v5
 
-      - name: Install dependencies
-        uses: ./.github/actions/install-packages
-        with:
-          auth-token: ${{ secrets.GITHUB_TOKEN }}
+            - name: Install dependencies
+              uses: ./.github/actions/install-packages
+              with:
+                  auth-token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Generate SvelteKit types
-        run: bun run sync
+            - name: Lint files
+              run: bun run lint:error
 
-      - name: Lint files
-        run: bun run lint:error
+    audit:
+        name: Audit vulnerabilities
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v6
 
-  audit:
-    name: Audit vulnerabilities
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v6
+            - name: Install dependencies
+              uses: ./.github/actions/install-packages
+              with:
+                  auth-token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Install dependencies
-        uses: ./.github/actions/install-packages
-        with:
-          auth-token: ${{ secrets.GITHUB_TOKEN }}
+            - name: Run audit
+              run: bun audit --audit-level=high
 
-      - name: Run audit
-        run: bun audit --audit-level=high
+    check:
+        runs-on: ubuntu
+        strategy:
+            matrix:
+                command: ["check:error", "test:unit", "build"]
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v5
 
-  check:
-    runs-on: ubuntu
-    strategy:
-      matrix:
-        command: ["check:error", "test:unit", "build"]
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v5
+            - uses: ./.github/actions/install-packages
+              with:
+                  auth-token: ${{ secrets.GITHUB_TOKEN }}
 
-      - uses: ./.github/actions/install-packages
-        with:
-          auth-token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Run bun ${{ matrix.command }}
-        run: bun run ${{ matrix.command }}
-        env:
-            NODE_OPTIONS: ${{ matrix.command == 'build' && '--max_old_space_size=4096' || '' }}
+            - name: Run bun ${{ matrix.command }}
+              run: bun run ${{ matrix.command }}
+              env:
+                  NODE_OPTIONS: ${{ matrix.command == 'build' && '--max_old_space_size=4096' || '' }}
