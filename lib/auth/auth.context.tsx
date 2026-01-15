@@ -6,11 +6,15 @@ import { createDBClient } from "@/lib/db/db.client";
 import { User } from "@/types";
 
 interface AuthContextType {
-    user: User | null;
-    session: Session | null;
+    user: User | undefined;
+    session: Session | undefined;
     loading: boolean;
     signIn: (email: string, password: string) => Promise<void>;
-    signUp: (email: string, password: string) => Promise<void>;
+    signUp: (
+        email: string,
+        password: string,
+        username: string
+    ) => Promise<void>;
     signOut: () => Promise<void>;
 }
 
@@ -26,43 +30,57 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     useEffect(() => {
         async function getSession() {
             try {
+                setLoading(true);
+
                 const {
                     data: { session },
                 } = await supabase.auth.getSession();
-                if (!session)
-                    throw new Error("Unable to retrieve valid session");
 
-                const {
-                    data: { avatar, username },
-                } = await supabase
-                    .from("profiles")
-                    .select("*")
-                    .eq("id", session?.user.id)
-                    .single()
-                    .throwOnError();
-
-                setSession(session);
-                setUser({
-                    created_at: session.user.created_at,
-                    email: session.user.email!,
-                    id: session.user.id,
-                    username,
-                    avatar,
-                });
+                await setAuthContext(session);
             } finally {
                 setLoading(false);
             }
         }
 
-        getSession();
+        async function setAuthContext(session: Session | null) {
+            if (!session) {
+                setSession(undefined);
+                setUser(undefined);
+                return;
+            }
+
+            const {
+                data: { avatar, username },
+            } = await supabase
+                .from("profiles")
+                .select("*")
+                .eq("id", session.user.id)
+                .single()
+                .throwOnError();
+
+            setSession(session);
+            setUser({
+                created_at: session.user.created_at,
+                email: session.user.email!,
+                id: session.user.id,
+                username,
+                avatar,
+            });
+        }
 
         const {
             data: { subscription },
-        } = supabase.auth.onAuthStateChange((_event, session) => {
-            setSession(session);
-            setUser(session?.user ?? null);
-            setLoading(false);
+        } = supabase.auth.onAuthStateChange(async (_event, session) => {
+            try {
+                setLoading(true);
+
+                await setAuthContext(session);
+            } finally {
+                setLoading(false);
+            }
         });
+
+        getSession();
 
         return () => {
             subscription.unsubscribe();
@@ -77,8 +95,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         if (error) throw error;
     }
 
-    async function signUp(email: string, password: string) {
-        const { error } = await supabase.auth.signUp({ email, password });
+    async function signUp(email: string, password: string, username: string) {
+        const { error } = await supabase.auth.signUp({
+            email,
+            password,
+            options: {
+                data: {
+                    username,
+                },
+            },
+        });
         if (error) throw error;
     }
 

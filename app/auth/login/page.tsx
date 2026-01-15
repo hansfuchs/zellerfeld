@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useAuth } from "@/lib/auth/auth.context";
 import { useRouter } from "next/navigation";
 
-export default function LoginForm() {
+export default function LoginPage() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
@@ -19,6 +19,7 @@ export default function LoginForm() {
 
         try {
             await signIn(email, password);
+            router.push("/");
         } catch (error) {
             console.error("Login error:", error);
         } finally {

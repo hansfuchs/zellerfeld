@@ -14,12 +14,3 @@ export async function getUser() {
 
     return user;
 }
-
-export async function requireAuth() {
-    const user = await getUser();
-    if (!user) {
-        throw new Error("Authentication required");
-    }
-
-    return user;
-}

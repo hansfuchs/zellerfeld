@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
-import { getUser } from "@/lib/auth/auth.server";
 import { AuthProvider } from "@/lib/auth/auth.context";
 
 import Header from "@/lib/components/general/Header";
@@ -27,8 +26,6 @@ export default async function RootLayout({
 }: Readonly<{
     children: React.ReactNode;
 }>) {
-    const user = await getUser();
-
     return (
         <html lang="en">
             <body
@@ -37,7 +34,7 @@ export default async function RootLayout({
                 <AuthProvider>
                     <div className="flex h-screen w-screen justify-center p-4">
                         <div className="flex w-3xl flex-col items-center overflow-x-hidden">
-                            <Header user={user} />
+                            <Header />
                             <div className="w-full">{children}</div>
                         </div>
                     </div>
