@@ -12,6 +12,6 @@
     "htmlWhitespaceSensitivity": "ignore",
     "endOfLine": "lf",
     "singleAttributePerLine": false,
-    "plugins": [],
+    "plugins": ["prettier-plugin-tailwindcss"],
     "overrides": []
 }
