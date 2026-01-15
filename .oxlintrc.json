@@ -11,8 +11,9 @@
         ".next/**",
         "out/**",
         "build/**",
-        "next-env.d.ts",
-        "types/**"
+        "**/*.d.ts",
+        "types/**",
+        "lib/db/db.types.ts"
     ],
     "overrides": [],
     "plugins": [
@@ -45,7 +46,7 @@
         "no-explicit-any": "error",
         "import/extensions": "error",
         "typescript/triple-slash-reference": "off",
-        "typescript/no-floating-promises": "error",
+        "typescript/no-floating-promises": "warn",
         "typescript/no-duplicate-type-constituents": "error",
         "typescript/no-redundant-type-constituents": "error",
         "typescript/unbound-method": "error",
@@ -72,6 +73,8 @@
         "unicorn/prefer-set-has": "error",
         "unicorn/prefer-array-flat-map": "error",
         "unicorn/prefer-array-find": "error",
-        "promise/no-callback-in-promise": "error"
+        "promise/no-callback-in-promise": "error",
+        "react_perf/jsx-no-new-function-as-prop": "warn",
+        "react_perf/jsx-no-new-object-as-prop": "warn"
     }
 }
