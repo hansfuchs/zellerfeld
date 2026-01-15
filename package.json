@@ -14,7 +14,7 @@
         "test:unit": "vitest run",
         "supa:start": "bunx supabase start",
         "supa:stop": "bunx supabase stop",
-        "supa:gen": "bunx supabase gen types typescript --local > app/lib/db/db.types.ts",
+        "supa:gen": "bunx supabase gen types typescript --local > lib/db/db.types.ts",
         "supa:diff": "bunx supabase db diff --use-migra --schema=public,internal,storage",
         "supa:migrate": "bunx supabase db diff --use-migra --schema=public,internal,storage -f",
         "supa:reset": "bunx supabase db reset",
@@ -24,6 +24,7 @@
     "dependencies": {
         "@supabase/ssr": "^0.8.0",
         "@supabase/supabase-js": "^2.90.1",
+        "date-fns": "^4.1.0",
         "next": "16.0.7",
         "react": "19.2.0",
         "react-dom": "19.2.0"
@@ -45,7 +46,8 @@
         "prettier-plugin-tailwindcss": "^0.7.2",
         "supabase": "^2.72.7",
         "tailwindcss": "^4",
-        "typescript": "^5"
+        "typescript": "^5",
+        "vitest": "^4.0.17"
     },
     "lint-staged": {
         "**/*.{cjs,mjs,js,ts,tsx,jsx,md,html,json}": [

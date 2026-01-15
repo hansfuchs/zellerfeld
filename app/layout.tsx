@@ -2,6 +2,11 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
+import { getUser } from "@/lib/auth/auth.server";
+import { AuthProvider } from "@/lib/auth/auth.context";
+
+import Header from "@/lib/components/general/Header";
+
 const geistSans = Geist({
     variable: "--font-geist-sans",
     subsets: ["latin"],
@@ -17,17 +22,26 @@ export const metadata: Metadata = {
     description: "X Clone",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
     children,
 }: Readonly<{
     children: React.ReactNode;
 }>) {
+    const user = await getUser();
+
     return (
         <html lang="en">
             <body
                 className={`${geistSans.variable} ${geistMono.variable} antialiased`}
             >
-                {children}
+                <AuthProvider>
+                    <div className="flex h-screen w-screen justify-center p-4">
+                        <div className="flex w-3xl flex-col items-center overflow-x-hidden">
+                            <Header user={user} />
+                            <div className="w-full">{children}</div>
+                        </div>
+                    </div>
+                </AuthProvider>
             </body>
         </html>
     );

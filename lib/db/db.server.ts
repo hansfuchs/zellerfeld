@@ -4,26 +4,27 @@ import { cookies } from "next/headers";
 export async function createClient() {
     const cookieStore = await cookies();
 
-    return createServerClient(
-        import.meta.env.NEXT_PUBLIC_SUPABASE_URL!,
-        import.meta.env.NEXT_PUBLIC_SUPABASE_KEY!,
-        {
-            cookies: {
-                getAll() {
-                    return cookieStore.getAll();
-                },
-                setAll(cookiesToSet) {
-                    try {
-                        cookiesToSet.forEach(({ name, value, options }) =>
-                            cookieStore.set(name, value, options)
-                        );
-                    } catch {
-                        // The `setAll` method was called from a Server Component.
-                        // This can be ignored if you have middleware refreshing
-                        // user sessions.
-                    }
-                },
+    const dbUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const dbKey = process.env.NEXT_PUBLIC_SUPABASE_KEY;
+
+    if (!dbUrl || !dbKey) throw new Error("Missing DB env variables");
+
+    return createServerClient(dbUrl, dbKey, {
+        cookies: {
+            getAll() {
+                return cookieStore.getAll();
             },
-        }
-    );
+            setAll(cookiesToSet) {
+                try {
+                    cookiesToSet.forEach(({ name, value, options }) =>
+                        cookieStore.set(name, value, options)
+                    );
+                } catch {
+                    // The `setAll` method was called from a Server Component.
+                    // This can be ignored if you have middleware refreshing
+                    // user sessions.
+                }
+            },
+        },
+    });
 }
