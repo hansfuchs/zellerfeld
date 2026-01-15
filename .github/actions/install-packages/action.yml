@@ -1,0 +1,20 @@
+name: "Install packages"
+description: "Installs npm packages using bun"
+
+inputs:
+    auth-token:
+        description: "Authentication token for package registry"
+        required: true
+
+runs:
+    using: "composite"
+    steps:
+        - name: Install bun
+          uses: oven-sh/setup-bun@v2
+          with:
+              bun-version: 1.3.4
+              registry-url: "https://npm.pkg.github.com/"
+
+        - name: Install dependencies
+          shell: bash
+          run: bun i

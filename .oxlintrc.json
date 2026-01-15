@@ -1,0 +1,77 @@
+{
+    "$schema": "node_modules/oxlint/configuration_schema.json",
+    "categories": {
+        "correctness": "error",
+        "perf": "error"
+    },
+    "globals": { "browser": "readonly", "node": "readonly" },
+    "ignorePatterns": [
+        "**/static/**/*",
+        ".vercel/*",
+        ".next/**",
+        "out/**",
+        "build/**",
+        "next-env.d.ts",
+        "types/**"
+    ],
+    "overrides": [],
+    "plugins": [
+        "eslint",
+        "typescript",
+        "oxc",
+        "import",
+        "promise",
+        "vitest",
+        "unicorn",
+        "nextjs",
+        "react",
+        "react-perf"
+    ],
+    "rules": {
+        "no-unused-vars": [
+            "error",
+            {
+                "argsIgnorePattern": "^_|error|err|e",
+                "varsIgnorePattern": "^_|error|err|e",
+                "caughtErrorsIgnorePattern": "^_|error|err|e",
+                "ignoreRestSiblings": true
+            }
+        ],
+        "no-unused-expressions": "off",
+        "no-self-assign": "off",
+        "no-unassigned-vars": "error",
+        "no-empty": "error",
+        "eqeqeq": "error",
+        "no-explicit-any": "error",
+        "import/extensions": "error",
+        "typescript/triple-slash-reference": "off",
+        "typescript/no-floating-promises": "error",
+        "typescript/no-duplicate-type-constituents": "error",
+        "typescript/no-redundant-type-constituents": "error",
+        "typescript/unbound-method": "error",
+        "typescript/restrict-template-expressions": "error",
+        "typescript/await-thenable": "error",
+        "typescript/no-base-to-string": "error",
+        "typescript/require-array-sort-compare": "error",
+        "typescript/no-misused-spread": "error",
+        "eslint/no-extra-boolean-cast": "error",
+        "eslint/no-console": [
+            "error",
+            { "allow": ["warn", "error", "info", "assert"] }
+        ],
+        "eslint/no-await-in-loop": "error",
+        "eslint/no-async-promise-executor": "error",
+        "oxc/no-accumulating-spread": "error",
+        "oxc/no-map-spread": "error",
+        "oxc/const-comparisons": "error",
+        "unicorn/no-new-array": "error",
+        "unicorn/no-thenable": "error",
+        "unicorn/no-useless-spread": "error",
+        "unicorn/no-useless-fallback-in-spread": "error",
+        "unicorn/prefer-string-starts-ends-with": "error",
+        "unicorn/prefer-set-has": "error",
+        "unicorn/prefer-array-flat-map": "error",
+        "unicorn/prefer-array-find": "error",
+        "promise/no-callback-in-promise": "error"
+    }
+}
