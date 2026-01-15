@@ -1,13 +1,13 @@
 import { formatTimeStamp } from "@/lib/time";
-import { UserDisplay } from "@/types";
+import { UserDetails } from "@/types";
 
 import Avatar from "@/lib/components/shared/Avatar";
 
 interface Props {
-    user: UserDisplay;
+    user: UserDetails;
 }
 
-export default function UserDetails({ user }: Props) {
+export default function UserDetailsSection({ user }: Props) {
     return (
         <div>
             <Avatar username={user.username} avatar={user.avatar} size="L" />

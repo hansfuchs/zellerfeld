@@ -1,6 +1,6 @@
 import Author from "@/lib/components/shared/Author";
 import { formatTimeStamp } from "@/lib/time";
-import { Post } from "@/types";
+import { Post, UserDisplay } from "@/types";
 import { useMemo } from "react";
 
 interface Props {
@@ -8,9 +8,8 @@ interface Props {
 }
 
 export default async function PostCard({ post }: Props) {
-    const user = useMemo(
+    const user = useMemo<UserDisplay>(
         () => ({
-            id: post.userId,
             avatar: post.avatar,
             username: post.username,
         }),

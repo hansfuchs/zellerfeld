@@ -1,7 +1,7 @@
-import { UserDisplay } from "@/types";
+import { UserDetails } from "@/types";
 import { getUser } from "@/lib/auth/auth.server";
 
-import UserDetails from "./components/UserDetails";
+import UserDetailsSection from "./components/UserDetailsSection";
 
 export default async function ProfilePage({
     params,
@@ -11,7 +11,7 @@ export default async function ProfilePage({
     const { username } = await params;
 
     // NOTE: I know I could also just fetch the data directly in here, but I wanted to use the API route
-    async function getUserDetails(): Promise<UserDisplay> {
+    async function getUserDetails(): Promise<UserDetails> {
         const response = await fetch(
             `${process.env.NEXT_PUBLIC_BASE_URL}/api/users/${username}`
         );
@@ -25,7 +25,7 @@ export default async function ProfilePage({
 
     const user = await getUser();
 
-    const userDetails: UserDisplay = await getUserDetails();
+    const userDetails: UserDetails = await getUserDetails();
 
-    return <UserDetails user={userDetails} />;
+    return <UserDetailsSection user={userDetails} />;
 }

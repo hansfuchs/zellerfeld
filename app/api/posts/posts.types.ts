@@ -3,4 +3,4 @@ import { UserDisplay } from "@/types";
 
 type DBPost = Database["public"]["Tables"]["posts"]["Row"];
 
-export type Post = DBPost & Omit<UserDisplay, "id">;
+export type Post = DBPost & UserDisplay;

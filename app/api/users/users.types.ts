@@ -7,5 +7,8 @@ export type User = Database["public"]["Tables"]["profiles"]["Row"] & {
 export type UserDisplay = {
     username: User["username"];
     avatar: User["avatar"];
+};
+
+export type UserDetails = UserDisplay & {
     created_at: User["created_at"];
 };
