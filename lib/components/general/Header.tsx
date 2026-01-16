@@ -19,7 +19,11 @@ export default function Header() {
     }
 
     return (
-        <div className="mb-8 flex w-full justify-end">
+        <div className="mb-8 flex w-full justify-between">
+            <Link href="/">
+                <button>Feed</button>
+            </Link>
+
             {loading ? (
                 "..."
             ) : (

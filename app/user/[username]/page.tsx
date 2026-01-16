@@ -1,7 +1,10 @@
 import { UserDetails } from "@/types";
 import { getUser } from "@/lib/auth/auth.server";
+import { getPosts } from "@/app/api/posts/posts";
 
 import UserDetailsSection from "./components/UserDetailsSection";
+import PostForm from "@/lib/components/shared/posts/PostForm";
+import PostFeed from "@/lib/components/shared/posts/PostFeed";
 
 export default async function ProfilePage({
     params,
@@ -24,8 +27,20 @@ export default async function ProfilePage({
     }
 
     const user = await getUser();
+    const posts = await getPosts(username);
 
     const userDetails: UserDetails = await getUserDetails();
 
-    return <UserDetailsSection user={userDetails} />;
+    return (
+        <div className="flex h-full flex-col">
+            <div className="flex flex-col gap-8">
+                <PostForm />
+                <UserDetailsSection user={userDetails} />
+            </div>
+
+            <div className="mt-16 mb-4">Posts</div>
+
+            <PostFeed posts={posts} />
+        </div>
+    );
 }

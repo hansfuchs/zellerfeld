@@ -33,9 +33,11 @@ export default async function RootLayout({
             >
                 <AuthProvider>
                     <div className="flex h-screen w-screen justify-center p-4">
-                        <div className="flex w-3xl flex-col items-center overflow-x-hidden">
+                        <div className="flex w-xl flex-col items-center">
                             <Header />
-                            <div className="w-full">{children}</div>
+                            <div className="w-full flex-1 overflow-hidden">
+                                {children}
+                            </div>
                         </div>
                     </div>
                 </AuthProvider>
