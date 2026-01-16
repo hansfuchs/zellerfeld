@@ -13,7 +13,7 @@ How to create an account:
 1. Click on "Sign Up" in the header
 2. Create an account (use any email, any password) to receive a real confirmation link per email (10 minute mail should also work)
 3. Confirm account creation by clicking the link from the email.
-4. Log in using the login details you used earlier.
+4. If necessary, reload the page or log in using the login details you used earlier. The free Supabase instance might be a bit slow.
 
 # How to run locally
 
