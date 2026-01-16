@@ -2,11 +2,11 @@ import Link from "next/link";
 import Button from "@/lib/components/ui/Button";
 
 export default async function ConfirmPage({
-    query,
+    searchParams,
 }: {
-    query: Promise<{ confirmation_url: string | undefined }>;
+    searchParams: Promise<{ confirmation_url?: string }>;
 }) {
-    const { confirmation_url } = await query;
+    const { confirmation_url } = await searchParams;
 
     return (
         <>
