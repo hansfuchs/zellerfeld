@@ -1,9 +1,11 @@
 "use client";
 
 import { useAuth } from "@/lib/auth/auth.context";
+import { useRouter } from "next/navigation";
+
 import Link from "next/link";
 import Avatar from "@/lib/components/shared/Avatar";
-import { useRouter } from "next/navigation";
+import Button from "@/lib/components/ui/Button";
 
 export default function Header() {
     const { user, loading, signOut } = useAuth();
@@ -21,7 +23,7 @@ export default function Header() {
     return (
         <div className="mb-8 flex w-full justify-between">
             <Link href="/">
-                <button>Feed</button>
+                <Button>Feed</Button>
             </Link>
 
             {loading ? (
@@ -31,10 +33,10 @@ export default function Header() {
                     {user ? (
                         <>
                             <Link href={`/user/${user.username}`}>
-                                <button>Profile</button>
+                                <Button>Profile</Button>
                             </Link>
 
-                            <button onClick={logout}>Logout</button>
+                            <Button onClick={logout}>Logout</Button>
 
                             <Avatar
                                 username={user.username}
@@ -45,10 +47,10 @@ export default function Header() {
                     ) : (
                         <>
                             <Link href="/auth/login">
-                                <button>Login</button>
+                                <Button>Login</Button>
                             </Link>
                             <Link href="/auth/signup">
-                                <button>Sign Up</button>
+                                <Button>Sign Up</Button>
                             </Link>
                         </>
                     )}

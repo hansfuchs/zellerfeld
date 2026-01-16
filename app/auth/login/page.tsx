@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useAuth } from "@/lib/auth/auth.context";
 import { useRouter } from "next/navigation";
 import Input from "@/lib/components/ui/Input";
+import Button from "@/lib/components/ui/Button";
 
 export default function LoginPage() {
     const [email, setEmail] = useState("");
@@ -57,9 +58,9 @@ export default function LoginPage() {
                     onChange={(value) => setPassword(value)}
                 />
 
-                <button type="submit" disabled={loading}>
+                <Button type="submit" disabled={loading}>
                     {loading ? "Signing in..." : "Sign In"}
-                </button>
+                </Button>
             </form>
 
             {error && <div className="mt-4 text-red-500">{error}</div>}

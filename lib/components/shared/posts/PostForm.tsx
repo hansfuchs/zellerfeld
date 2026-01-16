@@ -3,7 +3,9 @@
 import { useState } from "react";
 import { useAuth } from "@/lib/auth/auth.context";
 import { createPost } from "@/lib/actions/posts.actions";
+
 import TextArea from "@/lib/components/ui/TextArea";
+import Button from "@/lib/components/ui/Button";
 
 export default function PostForm() {
     const [content, setContent] = useState("");
@@ -45,9 +47,9 @@ export default function PostForm() {
                     maxLength={280}
                     onChange={(value) => setContent(value)}
                 />
-                <button type="submit" disabled={loading}>
+                <Button type="submit" disabled={loading}>
                     {loading ? "Posting..." : "Post"}
-                </button>
+                </Button>
             </form>
 
             {error && <div className="mt-4 text-red-500">{error}</div>}

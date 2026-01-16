@@ -1,5 +1,7 @@
 import { useRouter } from "next/navigation";
+
 import Link from "next/link";
+import Button from "@/lib/components/ui/Button";
 
 export default async function ConfirmPage({
     query,
@@ -18,7 +20,7 @@ export default async function ConfirmPage({
             <div>Awesome! Your account was sucessfully confirmed.</div>
 
             <Link href="/" className="mt-8">
-                <button>Go to feed</button>
+                <Button>Go to feed</Button>
             </Link>
         </>
     );
