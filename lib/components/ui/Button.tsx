@@ -1,3 +1,5 @@
+"use client";
+
 interface Props {
     type?: "button" | "submit";
     disabled?: boolean;
