@@ -10,7 +10,7 @@ export default async function Feed() {
 
     return (
         <div className="flex h-full flex-col">
-            <PostForm />
+            {user && <PostForm />}
 
             <div className="mt-16 mb-4">All posts</div>
 

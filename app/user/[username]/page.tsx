@@ -34,7 +34,7 @@ export default async function ProfilePage({
     return (
         <div className="flex h-full flex-col">
             <div className="flex flex-col gap-8">
-                <PostForm />
+                {user?.user_metadata.username === username && <PostForm />}
                 <UserDetailsSection user={userDetails} />
             </div>
 
