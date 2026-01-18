@@ -80,7 +80,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         return () => {
             cancelled = true;
         };
-    }, [session, supabase]);
+    }, [session]);
 
     async function signIn(email: string, password: string) {
         const { error } = await supabase.auth.signInWithPassword({
