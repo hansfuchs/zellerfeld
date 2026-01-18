@@ -44,33 +44,35 @@ export default function SignupPage() {
 
     return (
         <>
-            <form
-                onSubmit={handleSubmit}
-                className="flex w-60 flex-col border border-white"
-            >
-                <Input
-                    type="text"
-                    value={username}
-                    placeholder="Username"
-                    onChange={(value) => setUsername(value)}
-                />
-                <Input
-                    type="email"
-                    value={email}
-                    placeholder="Email"
-                    onChange={(value) => setEmail(value)}
-                />
-                <Input
-                    type="password"
-                    value={password}
-                    placeholder="Password"
-                    onChange={(value) => setPassword(value)}
-                />
+            {!success && (
+                <form
+                    onSubmit={handleSubmit}
+                    className="flex w-60 flex-col border border-white"
+                >
+                    <Input
+                        type="text"
+                        value={username}
+                        placeholder="Username"
+                        onChange={(value) => setUsername(value)}
+                    />
+                    <Input
+                        type="email"
+                        value={email}
+                        placeholder="Email"
+                        onChange={(value) => setEmail(value)}
+                    />
+                    <Input
+                        type="password"
+                        value={password}
+                        placeholder="Password"
+                        onChange={(value) => setPassword(value)}
+                    />
 
-                <Button type="submit" disabled={loading}>
-                    {loading ? "Creating account..." : "Sign Up"}
-                </Button>
-            </form>
+                    <Button type="submit" disabled={loading}>
+                        {loading ? "Creating account..." : "Sign Up"}
+                    </Button>
+                </form>
+            )}
 
             {error && <div className="mt-4 text-red-500">{error}</div>}
 
