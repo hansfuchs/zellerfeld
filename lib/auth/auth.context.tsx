@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { Session } from "@supabase/supabase-js";
 import { createDBClient } from "@/lib/db/db.client";
 import { User } from "@/types";
@@ -25,67 +25,62 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const [session, setSession] = useState<Session | undefined>(undefined);
     const [loading, setLoading] = useState(true);
 
-    const supabase = createDBClient();
+    const supabase = useMemo(() => createDBClient(), []);
 
     useEffect(() => {
-        async function getSession() {
+        const {
+            data: { subscription },
+        } = supabase.auth.onAuthStateChange((_event, session) => {
+            setSession(session ?? undefined);
+        });
+
+        return () => subscription.unsubscribe();
+    });
+
+    useEffect(() => {
+        if (!session) {
+            setUser(undefined);
+            setLoading(false);
+            return;
+        }
+
+        let cancelled = false;
+
+        async function fetchProfile(session: Session) {
             try {
                 setLoading(true);
 
                 const {
-                    data: { session },
-                } = await supabase.auth.getSession();
+                    data: { avatar, username },
+                } = await supabase
+                    .from("profiles")
+                    .select("*")
+                    .eq("id", session.user.id)
+                    .single()
+                    .throwOnError();
 
-                await setAuthContext(session);
+                if (cancelled) return;
+
+                setUser({
+                    created_at: session.user.created_at,
+                    email: session.user.email!,
+                    id: session.user.id,
+                    username,
+                    avatar,
+                });
+            } catch (e) {
+                console.error("Failed to fetch profile:", e);
             } finally {
                 setLoading(false);
             }
         }
 
-        async function setAuthContext(session: Session | null) {
-            if (!session) {
-                setSession(undefined);
-                setUser(undefined);
-                return;
-            }
-
-            const {
-                data: { avatar, username },
-            } = await supabase
-                .from("profiles")
-                .select("*")
-                .eq("id", session.user.id)
-                .single()
-                .throwOnError();
-
-            setSession(session);
-            setUser({
-                created_at: session.user.created_at,
-                email: session.user.email!,
-                id: session.user.id,
-                username,
-                avatar,
-            });
-        }
-
-        const {
-            data: { subscription },
-        } = supabase.auth.onAuthStateChange(async (_event, session) => {
-            try {
-                setLoading(true);
-
-                await setAuthContext(session);
-            } finally {
-                setLoading(false);
-            }
-        });
-
-        getSession();
+        fetchProfile(session);
 
         return () => {
-            subscription.unsubscribe();
+            cancelled = true;
         };
-    }, [supabase]);
+    }, [session, supabase]);
 
     async function signIn(email: string, password: string) {
         const { error } = await supabase.auth.signInWithPassword({
