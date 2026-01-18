@@ -35,7 +35,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         });
 
         return () => subscription.unsubscribe();
-    });
+    }, [supabase.auth]);
 
     useEffect(() => {
         if (!session) {
@@ -71,7 +71,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             } catch (e) {
                 console.error("Failed to fetch profile:", e);
             } finally {
-                setLoading(false);
+                if (!cancelled) {
+                    setLoading(false);
+                }
             }
         }
 
@@ -80,7 +82,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         return () => {
             cancelled = true;
         };
-    }, [session]);
+    }, [session, supabase]);
 
     async function signIn(email: string, password: string) {
         const { error } = await supabase.auth.signInWithPassword({
